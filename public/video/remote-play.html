@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remote video play</title>
+  <script src="https://player.vimeo.com/api/player.js"></script>
+</head>
+<body>
+  <div id="player"></div>
+  <script>
+    var options = {
+      id: 410011254,
+    }
+
+    var player = new Vimeo.Player('player', options);
+
+    player.setVolume(0);
+
+    player.on('play', function() {
+        console.log('played the video!');
+    });
+  </script>
+</body>
+</html>
