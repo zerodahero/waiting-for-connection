@@ -39,7 +39,7 @@
     vr-mode-ui="enabled: false;"
     renderer="logarithmicDepthBuffer: true;"
     embedded
-    arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;"
+    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
   >
     <!-- Photo by JoelValve on Unsplash -->
 
@@ -49,10 +49,9 @@
     <a-nft
       type="nft"
       url="ar-demo/img-desc/dancer-water"
-      emitevents="true"
       smooth="true"
       smoothCount="10"
-      smoothTolerance=".01"
+      smoothTolerance=".1"
       smoothThreshold="5"
     >
         <!-- as a child of the a-nft entity, you can define the content to show. here's a GLTF model entity -->
@@ -62,10 +61,27 @@
             position="50 150 0"
         >
         </a-entity> -->
-        <a-box material="color: yellow" position="0 30 0"/>
+        <a-text
+          value="We're the dancers..."
+          look-at="[camera]"
+          scale="50 50 50"
+          position="10 10 -10"
+         ></a-text>
+        <a-box material="color: yellow" position="0 0 0" scale="15 15 15" />
     </a-nft>
     <!-- static camera that moves according to the device movemenents -->
-    <a-entity camera></a-entity>
+    <a-entity camera rotation-reader></a-entity>
   </a-scene>
+  <script>
+    window.addEventListener('markerFound', function (ev) {
+      console.log('found', ev);
+    });
+    window.addEventListener('markerLost', function (ev) {
+      console.log('lost', ev);
+    });
+    window.addEventListener('arjs-nft-loaded', function (ev) {
+      console.log('arjs-nft-loaded', ev);
+    });
+  </script>
 </body>
 </html>

@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Remote video play</title>
-  <script src="https://player.vimeo.com/api/player.js"></script>
+  <title>Remote video admin</title>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/core-js/2.1.4/core.min.js"></script>
   <script src="//unpkg.com/@feathersjs/client@^3.0.0/dist/feathers.js"></script>
   <script src="//unpkg.com/socket.io-client@1.7.3/dist/socket.io.js"></script>
@@ -15,48 +14,43 @@
     });
     // @feathersjs/client is exposed as the `feathers` global.
     var app = feathers();
-
+    // var restClient = feathers.rest('http://localhost:3030')
     app.configure(feathers.socketio(socket));
     app.configure(feathers.authentication());
+
+    // Configure an AJAX library (see below) with that client
+    // app.configure(restClient.fetch(window.fetch));
+
 
     // app.service('messages').create({
     //   text: 'A new message'
     // });
+    function sendPlay(play) {
+      // alert('Send play clicked!')
+      // app.service('adminCommands').create({play: true})
+      app.service('commands').create({
+        play
+      });
+    }
 
-    app.service('commands').on('created', (message) => {
-      console.log('received commands created message', message)
-      if (message.play) {
-        console.log('playing')
-        player.play()
-      } else {
-        console.log('pausing')
-        player.pause()
-      }
-
-      if (message.position) {
-        console.log('position')
-        player.setCurrentTime(message.position)
-      }
-    })
+    function sendPlaybackPosition() {
+      app.service('commands').create({
+        position: document.getElementById('playback_position').value
+      })
+    }
 
     // feathers.errors is an object with all of the custom error types.
   </script>
 </head>
 <body>
-  <div id="player"></div>
-  <script>
-    var options = {
-      id: 410011254,
-      controls: false,
-    }
-
-    var player = new Vimeo.Player('player', options);
-
-    player.setVolume(0.1);
-
-    player.on('play', function() {
-        console.log('played the video!');
-    });
-  </script>
+  <div>
+    <button onclick="sendPlay(true)">Play</button>
+    <button onclick="sendPlay(false)">Pause</button>
+  </div>
+  <div>
+    <label>Playback Position</label>
+    <input type="text" id="playback_position" />
+    <button onclick="sendPlaybackPosition()">Set Playback Position</button>
+  </div>
 </body>
 </html>
